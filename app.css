@@ -8,8 +8,12 @@
 .visualize-labels-x {
   display:none;
 }
-.container {
+#visitors_10days .container {
   width:320px;
   margin:20px auto;
   padding-left:50px;
+}
+#visited_websites table {
+	font-weight:normal;
+	font-size:0.7em;
 }

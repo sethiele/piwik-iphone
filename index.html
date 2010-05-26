@@ -95,6 +95,22 @@
           );
         };
 
+        var get_visited_websites = function(install, site, token, root) {
+          var data_accessed = install+token+site;
+          if ($("#visits").data('loaded') == data_accessed) { return; }
+          $.getJSON(
+            url_for({method: 'Actions.getPageUrls', period: $("#visited_websites #period").val(), date: $("#visited_websites #date").val()}),
+            function(json) {
+              $.each(json, function(key, value) {
+                // console.log(value.idsubdatatable);
+                if(value.idsubdatatable) label = "<span onclick=\"get_visited_websites('test', 'test2', 'test3')\">+"+value.label.substring(0,20)+"</span>";
+                else label = value.label.substring(0,20);
+                $('#visited_websites table').append("<tr><td>"+label+"</td><td>"+value.nb_visits+"</td><td>"+value.entry_nb_visits+"</td><td>"+value.entry_bounce_count+"</td><td>"+value.exit_nb_visits+"</td></tr>");
+              });
+            }
+          );
+        };
+
         $('#querySites').click(function() {
           if ($("#install").val() === "") { return; }
 
@@ -122,6 +138,24 @@
         $("#visitors_10days").bind('pageAnimationEnd', function(event, info) {
           if (info.direction == "out") { return; }
           get_visitors(localStorage.install, localStorage.site, localStorage.token);
+        });
+        
+        $("#visited_websites").bind('pageAnimationEnd', function(event, info) {
+          if (info.direction == "out") { return; }
+          // Fill the Date Select
+          $("#visited_websites #date").append("<option value=\"today\">today</option>");
+          $("#visited_websites #date").append("<option value=\"yesterday\">yesterday</option>");
+          var today = new Date();
+          today.setTime(today.getTime() - 2 * 24 * 60 * 60 * 1000);
+          var i = 1;
+          do {
+            dateVal = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+            $("#visited_websites #date").append("<option value=\""+dateVal+"\">"+dateVal+"</option>");
+            today.setTime(today.getTime() - 24 * 60 * 60 * 1000);
+            i++;
+          } while (i != 30)
+          
+          get_visited_websites(localStorage.install, localStorage.site, localStorage.token);
         });
 
         $("#dashboard").bind('pageAnimationEnd', function(event, info) {
@@ -155,6 +189,46 @@
         </div>
       </ul>
     </div>
+    <!-- viseted websites -->
+    <div id="visited_websites">
+      <div class="toolbar">
+        <h1>Viseted websites</h1>
+        <a class="back" href="#home">Back</a>
+      </div>
+      <ul class="edit rounded">
+        <div class="loading">
+        </div>
+      </ul>
+      Please choose the Date:
+      <ul class="edit rounded">
+        <li>
+          <select id="date">
+          </select>
+        </li>
+      </ul>
+      Please choose the Period:
+      <ul class="edit rounded">
+        <li>
+          <select id="period">
+            <option value="day">day</option>
+            <option value="week">week</option>
+            <option value="month">month</option>
+            <option value="year">year</option>
+          </select>
+        </li>
+      </ul>
+      
+      <ul class="edit rounded">
+        <li>
+          <table>
+            <thead>
+              <tr><td>Label</td><td>New Visits</td><td>Start Page</td><td>left immediately</td><td>finished here</td></tr>
+            </thead>
+          </table>
+        </li>
+      </ul>
+    </div>
+    <!-- end visited websites -->
     <div id="settings">
       <div class="toolbar">
         <h1>Settings</h1>
@@ -190,6 +264,7 @@
       <h2>No website set up</h2>
       <ul class="rounded">
         <li class="arrow"><a href="#visitors_10days">Visitors last 10 days</a></li>
+        <li class="arrow"><a href="#visited_websites">Visited websites</a></li>
       </ul>
     </div>
   </body>
