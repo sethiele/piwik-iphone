@@ -16,4 +16,16 @@
 #visited_websites table {
 	font-weight:normal;
 	font-size:0.7em;
+	border-collapse:collapse;
+  border-spacing:0px;
+}
+
+#visited_websites table th{
+  padding-right:5px;
+  padding-bottom:10px;
+}
+
+#visited_websites table td{
+  border-bottom:1px solid #000000;
+
 }
