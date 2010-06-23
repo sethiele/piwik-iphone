@@ -102,40 +102,42 @@
           $.getJSON(
             url_for({method: 'Live.getLastVisits'}),
             function(json) {
-              if (json.result === "error") {
-                alert_error(json.message);
-                return;
-              }
               var tmpText = "";
-              $.each(json, function(key, value) {
-                tmpText += "<tr><td>#"+(key+1)+"</td>";
-                // new or returned Visitor
-                tmpText += "<td>";
-                if(value.isVisitorReturning) tmpText += "+";
-                else tmpText += "++";
-                tmpText += "</td>";
-                // visitor country
-                tmpText += "<td><img src=\""+install+"/"+value.countryFlag+"\" alt=\"from:"+value.country+"\"></td>";
-                // visit length
-                tmpText += "<td>"+value.visitLengthPretty+"</td>";
-                // referer
-                tmpText += "<td>";
-                if(value.refererType == "searchEngine") tmpText += "<a href=\""+value.refererUrl+"\"  \
-                  target=\"_blank\">"+value.refererName+"</a>";
-                else if(value.refererType == "webite") tmpText += "<a href=\""+value.refererUrl+"\" target=\"_blank\">Website</a>";
-                tmpText += "</td>";
-                // operatingsystem
-                tmpText += "<td><img src=\""+install+"/"+value.operatingSystemIcon+"\" alt=\""+value.operatingSystemShortName+"\"></td>";
-                // browser
-                tmpText += "<td><img src=\""+install+"/"+value.browserIcon+"\" alt=\""+value.browser+"\"></td>";
-                tmpText += "</tr>";
-              });
-              $("#last_10_visitors .loading").hide();
-              $("#last_10_visitors tbody").append(tmpText);
-              $("#last_10_visitors table").show();
-              $("#last_10_visitors small").show();
-              $("#last_10_visitors .container").css("margin", "0px");
-              $("#last_10_visitors .container").css("padding-left", "5px");
+              if (json.result === "error") {
+                tmpText = json.message;
+                $("#last_10_visitors .loading").hide();
+                $("#last_10_visitors .container").html(tmpText);
+              } else {
+                $.each(json, function(key, value) {
+                  tmpText += "<tr><td>#"+(key+1)+"</td>";
+                  // new or returned Visitor
+                  tmpText += "<td>";
+                  if(value.isVisitorReturning) tmpText += "+";
+                  else tmpText += "++";
+                  tmpText += "</td>";
+                  // visitor country
+                  tmpText += "<td><img src=\""+install+"/"+value.countryFlag+"\" alt=\"from:"+value.country+"\"></td>";
+                  // visit length
+                  tmpText += "<td>"+value.visitLengthPretty+"</td>";
+                  // referer
+                  tmpText += "<td>";
+                  if(value.refererType == "searchEngine") tmpText += "<a href=\""+value.refererUrl+"\"  \
+                    target=\"_blank\">"+value.refererName+"</a>";
+                  else if(value.refererType == "webite") tmpText += "<a href=\""+value.refererUrl+"\" target=\"_blank\">Website</a>";
+                  tmpText += "</td>";
+                  // operatingsystem
+                  tmpText += "<td><img src=\""+install+"/"+value.operatingSystemIcon+"\" alt=\""+value.operatingSystemShortName+"\"></td>";
+                  // browser
+                  tmpText += "<td><img src=\""+install+"/"+value.browserIcon+"\" alt=\""+value.browser+"\"></td>";
+                  tmpText += "</tr>";
+                });
+                $("#last_10_visitors .loading").hide();
+                $("#last_10_visitors tbody").append(tmpText);
+                $("#last_10_visitors table").show();
+                $("#last_10_visitors small").show();
+                $("#last_10_visitors .container").css("margin", "0px");
+                $("#last_10_visitors .container").css("padding-left", "5px");
+              }
             }
           );
         };
