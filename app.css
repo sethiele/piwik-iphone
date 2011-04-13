@@ -1,6 +1,18 @@
 .loading {
   background: url(jqtouch/apple-theme/img/loading.gif) no-repeat 50% center;
-  height:50px;
+  position: absolute;
+  display: block;
+  z-index: 1000;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  background-color:rgba(255,255,255,0.5);
+}
+#querySites.loading {
+  height:32px;
+  background-color:transparent !important;
+  margin:0;
+  padding:0;
 }
 #visits {
   width:240px;
@@ -8,24 +20,12 @@
 .visualize-labels-x {
   display:none;
 }
-#visitors_10days .container {
+.container {
   width:320px;
   margin:20px auto;
   padding-left:50px;
 }
-#visited_websites table {
-	font-weight:normal;
-	font-size:0.7em;
-	border-collapse:collapse;
-  border-spacing:0px;
-}
-
-#visited_websites table th{
-  padding-right:5px;
-  padding-bottom:10px;
-}
-
-#visited_websites table td{
-  border-bottom:1px solid #000000;
-
+.graph {
+  width:280px;
+  height:350px;
 }
